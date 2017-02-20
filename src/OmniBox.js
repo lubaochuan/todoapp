@@ -7,7 +7,7 @@ class OmniBox extends Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
+    this.onSubmitEditing = this.onSubmitEditing.bind(this);
   }
 
   componentWillMount() {
@@ -18,7 +18,7 @@ class OmniBox extends Component {
 
   onChange(event){
     var title = event.nativeEvent.text;
-    var dataList = this.props.data.filter((item) => item.title.match(new RegExp('.*' + title +'.*', 'gi')));
+    var dataList = this.props.data.filter((item) => item.title.includes(title));
 
     this.setState({
       newValue: title
@@ -26,8 +26,8 @@ class OmniBox extends Component {
     this.props.updateDataList(dataList);
   }
 
-  onKeyPress(event){
-    if (event.nativeEvent.key == 'Enter' && this.state.newValue) {
+  onSubmitEditing(event){
+    if (this.state.newValue) {
       var newDataItem = new TodoModel(this.state.newValue);
 
       var dataList = this.props.data;
@@ -57,7 +57,7 @@ class OmniBox extends Component {
         placeholder='Add a todo or Search'
         blurOnSubmit={false}
         value={this.state.newValue}
-        onKeyPress={this.onKeyPress}
+        onSubmitEditing={this.onSubmitEditing}
         onChange={this.onChange}>
       </TextInput>
     );
